@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneAPI", "DroneAPI\DroneAPI.csproj", "{609BE7FD-7B59-4C2D-BE7C-E8918F9761BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{609BE7FD-7B59-4C2D-BE7C-E8918F9761BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{609BE7FD-7B59-4C2D-BE7C-E8918F9761BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{609BE7FD-7B59-4C2D-BE7C-E8918F9761BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{609BE7FD-7B59-4C2D-BE7C-E8918F9761BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {183F9E73-DD61-4943-AF9B-868D84E153C8}
+	EndGlobalSection
+EndGlobal
