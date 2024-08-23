@@ -43,14 +43,14 @@ namespace DroneAPI.Controllers
         public IActionResult Create(Drone drone)
         {
             DroneService.Add(drone);
-            return CreatedAtAction(nameof(Get), new { id = drone.Id }, drone);
+            return CreatedAtAction(nameof(Get), new { id = drone.DroneID }, drone);
         }
 
         // PUT api/<DroneController>/5
         [HttpPut("{id}")]
         public IActionResult Update(int id, Drone drone)
         {
-            if (id != drone.Id)
+            if (id != drone.DroneID)
             {
                 return BadRequest();
             }

@@ -1,4 +1,13 @@
 
+using DroneAPI.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+
 namespace DroneAPI
 {
     public class Program
@@ -8,6 +17,10 @@ namespace DroneAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<DroneContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            
+            //builder.Services.AddDatabaseDeveloperPageExceptionFilter<DroneContext>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -16,6 +29,9 @@ namespace DroneAPI
 
             var app = builder.Build();
 
+            
+
+           
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -29,6 +45,22 @@ namespace DroneAPI
 
 
             app.MapControllers();
+
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<DroneContext>();
+                    DbInitializer.Initialize(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while seeding the DB.");
+                }
+            }
 
             app.Run();
         }

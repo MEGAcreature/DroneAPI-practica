@@ -3,10 +3,8 @@ using DroneAPI.Models;
 
 namespace DroneAPI.Data
 {
-    public class DroneContext : DbContext
+    public class DroneContext(DbContextOptions<DroneContext> options) : DbContext(options)
     {
-        public DroneContext(DbContextOptions<DroneContext> options) : base(options) { }
-
         public DbSet<Drone> Drones { get; set; }
         public DbSet<Snapshot> Snapshots { get; set; }
         public DbSet<User> Users { get; set; }
