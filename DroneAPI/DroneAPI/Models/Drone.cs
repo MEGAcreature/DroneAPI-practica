@@ -8,7 +8,7 @@
 
         public string? Model { get; set; }
 
-        public string? Owner { get; set; }
+        public int OwnerId { get; set; }
 
     }
 }
