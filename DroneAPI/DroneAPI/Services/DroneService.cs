@@ -10,10 +10,10 @@ namespace DroneAPI.Services
         {
             Drones = new List<Drone>
             {
-                new Drone() {Id = 0, SerialNumber = 123, Model = "Fly", Owner = "Csaba"},
-                new Drone() {Id = 1, SerialNumber = 145, Model = "Fly", Owner = "Csaba"},
-                new Drone() {Id = 2, SerialNumber = 155, Model = "Fly", Owner = "Csaba"},
-                new Drone() {Id = 3, SerialNumber = 167, Model = "Fly", Owner = "Csaba"},
+                new Drone() {Id = 0, SerialNumber = 123, Model = "Fly1", Owner = "Csaba"},
+                new Drone() {Id = 1, SerialNumber = 145, Model = "Fly2", Owner = "Csaba"},
+                new Drone() {Id = 2, SerialNumber = 155, Model = "Fly3", Owner = "Csaba"},
+                new Drone() {Id = 3, SerialNumber = 167, Model = "Fly4", Owner = "Csaba"},
             };
         }
 
