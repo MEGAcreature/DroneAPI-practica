@@ -45,12 +45,20 @@ namespace DroneAPI.Controllers
         // PUT: api/Drones/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDrone(int id, Drone drone)
+        public async Task<IActionResult> PutDrone(int id, DroneDTO droneDTO)
         {
-            if (id != drone.DroneID)
+            if (id != droneDTO.DroneID)
             {
                 return BadRequest();
             }
+
+            Drone drone = new()
+            {
+                DroneID = id,
+                Model = droneDTO.Model,
+                SerialNumber = droneDTO.SerialNumber,
+                UserID = droneDTO.UserID,
+            };
 
             _context.Entry(drone).State = EntityState.Modified;
 
@@ -76,8 +84,14 @@ namespace DroneAPI.Controllers
         // POST: api/Drones
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Drone>> PostDrone(Drone drone)
+        public async Task<ActionResult<Drone>> PostDrone(DroneDTO droneDTO)
         {
+            Drone drone = new()
+            {
+                UserID = droneDTO.UserID,
+                SerialNumber = droneDTO.SerialNumber,
+                Model = droneDTO.Model,
+            };
             _context.Drones.Add(drone);
             await _context.SaveChangesAsync();
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DroneAPI.Data;
 using DroneAPI.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DroneAPI.Controllers
 {
@@ -45,12 +46,24 @@ namespace DroneAPI.Controllers
         // PUT: api/Snapshots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSnapshot(int id, Snapshot snapshot)
+        [RequestSizeLimit(524288000)]
+        public async Task<IActionResult> PutSnapshot(int id, SnapshotDTO snapshotDTO)
         {
-            if (id != snapshot.SnapshotID)
+            if (id != snapshotDTO.SnapshotID)
             {
                 return BadRequest();
             }
+
+            Snapshot snapshot = new()
+            {
+                SnapshotID = snapshotDTO.SnapshotID,
+                Altitude = snapshotDTO.Altitude,
+                DateTime = snapshotDTO.DateTime,
+                Description = snapshotDTO.Description,
+                Latitude = snapshotDTO.Latitude,
+                Longitude = snapshotDTO.Longitude,
+                DroneId = snapshotDTO.DroneId,
+            };
 
             _context.Entry(snapshot).State = EntityState.Modified;
 
@@ -76,6 +89,7 @@ namespace DroneAPI.Controllers
         // POST: api/Snapshots
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [RequestSizeLimit(524288000)]
         public async Task<ActionResult<Snapshot>> PostSnapshot(Snapshot snapshot)
         {
             _context.Snapshots.Add(snapshot);

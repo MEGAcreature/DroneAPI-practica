@@ -45,12 +45,20 @@ namespace DroneAPI.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserDTO userDTO)
         {
-            if (id != user.UserID)
+            if (id != userDTO.UserID)
             {
                 return BadRequest();
             }
+
+            User user = new()
+            {
+                UserID = userDTO.UserID,
+                Name = userDTO.Name,
+                Email = userDTO.Email,
+                Password = userDTO.Password,
+            };
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -76,8 +84,16 @@ namespace DroneAPI.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser([Bind("Name,Email,Password")] UserDTO userDTO)
         {
+            User user = new()
+            {
+                Name = userDTO.Name,
+                Email = userDTO.Email,
+                Password = userDTO.Password,
+            };
+
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 

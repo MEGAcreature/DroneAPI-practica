@@ -36,6 +36,7 @@ namespace DroneAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
