@@ -46,7 +46,6 @@ namespace DroneAPI.Controllers
         // PUT: api/Snapshots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [RequestSizeLimit(524288000)]
         public async Task<IActionResult> PutSnapshot(int id, SnapshotDTO snapshotDTO)
         {
             if (id != snapshotDTO.SnapshotID)
@@ -90,8 +89,19 @@ namespace DroneAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [RequestSizeLimit(524288000)]
-        public async Task<ActionResult<Snapshot>> PostSnapshot(Snapshot snapshot)
+        public async Task<ActionResult<Snapshot>> PostSnapshot(SnapshotDTO snapshotDTO)
         {
+            Snapshot snapshot = new()
+            {
+                SnapshotID = snapshotDTO.SnapshotID,
+                Altitude = snapshotDTO.Altitude,
+                DateTime = snapshotDTO.DateTime,
+                Description = snapshotDTO.Description,
+                Latitude = snapshotDTO.Latitude,
+                Longitude = snapshotDTO.Longitude,
+                DroneId = snapshotDTO.DroneId,
+            };
+
             _context.Snapshots.Add(snapshot);
             await _context.SaveChangesAsync();
 
