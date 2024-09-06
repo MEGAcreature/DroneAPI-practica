@@ -17,7 +17,10 @@ namespace DroneAPI
 
             // Add services to the container.
             builder.Services.AddDbContext<DroneContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.EnableSensitiveDataLogging();
+            });
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

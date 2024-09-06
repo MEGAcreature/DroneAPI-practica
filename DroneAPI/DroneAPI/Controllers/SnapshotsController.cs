@@ -16,10 +16,12 @@ namespace DroneAPI.Controllers
     public class SnapshotsController : ControllerBase
     {
         private readonly DroneContext _context;
+        private readonly IConfiguration _config;
 
-        public SnapshotsController(DroneContext context)
+        public SnapshotsController(DroneContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         // GET: api/Snapshots
@@ -88,7 +90,6 @@ namespace DroneAPI.Controllers
         // POST: api/Snapshots
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [RequestSizeLimit(524288000)]
         public async Task<ActionResult<Snapshot>> PostSnapshot(SnapshotDTO snapshotDTO)
         {
             Snapshot snapshot = new()
@@ -124,9 +125,66 @@ namespace DroneAPI.Controllers
             return NoContent();
         }
 
+        // POST: api/Snapshots/image/{id}
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=
+
+        [HttpPost("image/{id}")]
+        public async Task<IActionResult> PostSnapshotImage(int id, IFormFile file)
+        {
+            var snapshotRes = await GetSnapshot(id);
+            Snapshot? snapshot = snapshotRes.Value;
+
+            if (snapshot == null)
+            {
+                return NotFound();
+            }
+
+            if (file.Length > 0)
+            {
+
+                var fileName = file.FileName;
+                var fileExtension = Path.GetExtension(fileName);
+                var randomFileName = $"{Path.GetRandomFileName()}{fileExtension}";
+                
+                var saveToPath = Path.Combine(_config.GetValue<string>("StoredFilesPath"), randomFileName);
+                //var saveToPath = Path.Combine(_config.GetValue<string>("StoredFilesPath"), fileName);
+
+                using (var stream = System.IO.File.Create(saveToPath))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                snapshot.Description = $"/images/{randomFileName}";
+
+                _context.Entry(snapshot).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SnapshotExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return Ok();
+        }
+
+
         private bool SnapshotExists(int id)
         {
             return _context.Snapshots.Any(e => e.SnapshotID == id);
         }
+
+
+
     }
 }
